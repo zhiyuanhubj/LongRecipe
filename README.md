@@ -12,8 +12,8 @@ To begin, download the dataset represented by the Llama3 tokenizer from this lin
 
 
 ```
-# Command to generate position index files (replace with actual command)
-python generate_position_index.py --data_path <path_to_downloaded_data> --output_dir <output_directory>
+# Command to load dataset and generate position index files
+python preprocess_token_PI/dataprocessor.py
 ```
 
 
@@ -35,7 +35,7 @@ train.py \
 --learning-rate 5e-5 \
 --epoch 1 \
 --data_path $DATA_PATH_CONTEXT_EXTENSION \
---output-dir  ./output/$MODEL_NAME-$SETTING-80-$SEQ_LENGTH-$SUB_LABEL \
+--output-dir  ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL \
 --seed 2027 \
 --model $MODEL \
 --seq-length $SEQ_LENGTH \
@@ -46,7 +46,7 @@ train.py \
 --rss-path $RSS_PI_PATH \
 --parallel_mode ulysses_attn \
 --num_proc 5 \
---stage 1
+--stage 0
 ```
 
 
@@ -62,10 +62,10 @@ Arguments Explanation:
 Post-training, copy the tokenizer files to the output directory and remove any unnecessary files:
 
 ```
-cp $MODEL/special_tokens_map.json ./output/$MODEL_NAME-$SETTING-80-$SEQ_LENGTH-$SUB_LABEL/stage_0
-cp $MODEL/tokenizer_config.json ./output/$MODEL_NAME-$SETTING-80-$SEQ_LENGTH-$SUB_LABEL/stage_0
-cp $MODEL/tokenizer.json ./output/$MODEL_NAME-$SETTING-80-$SEQ_LENGTH-$SUB_LABEL/stage_0
-rm ./output/$MODEL_NAME-$SETTING-80-$SEQ_LENGTH-$SUB_LABEL/stage_0/model.safetensors
+cp $MODEL/special_tokens_map.json ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL/stage_0
+cp $MODEL/tokenizer_config.json ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL/stage_0
+cp $MODEL/tokenizer.json ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL/stage_0
+rm ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL/stage_0/model.safetensors
 ```
 
 #### Stage 2: Training Annealing
@@ -81,7 +81,7 @@ train.py \
 --gradient-accumulate-every 96 \
 --learning-rate 5e-6 \
 --epoch 1 \
---output-dir  ./output/$MODEL_NAME-$SETTING-80-$SEQ_LENGTH-$SUB_LABEL \
+--output-dir  ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL \
 --seed 2027 \
 --model $STAGE_1_MODEL \
 --seq-length $SEQ_LENGTH \
@@ -92,16 +92,16 @@ train.py \
 --rss-path $RSS_PI_PATH \
 --parallel_mode ulysses_attn \
 --num_proc 10 \
---stage 2
+--stage 1
 ```
 
 Copy the updated tokenizer files to the output directory:
 
 ```
-cp $MODEL/special_tokens_map.json ./output/$MODEL_NAME-$SETTING-80-$SEQ_LENGTH-$SUB_LABEL/stage_1
-cp $MODEL/tokenizer_config.json ./output/$MODEL_NAME-$SETTING-80-$SEQ_LENGTH-$SUB_LABEL/stage_1
-cp $MODEL/tokenizer.json ./output/$MODEL_NAME-$SETTING-80-$SEQ_LENGTH-$SUB_LABEL/stage_1
-rm ./output/$MODEL_NAME-$SETTING-80-$SEQ_LENGTH-$SUB_LABEL/stage_1/model.safetensors
+cp $MODEL/special_tokens_map.json ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL/stage_1
+cp $MODEL/tokenizer_config.json ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL/stage_1
+cp $MODEL/tokenizer.json ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL/stage_1
+rm ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL/stage_1/model.safetensors
 ```
 
 #### Stage 3: Model Merge
@@ -112,19 +112,23 @@ The final stage involves merging the original model with the fine-tuned model us
 accelerate launch \
 --config_file accelerate_configs/single_node.yaml \
 train.py \
---output-dir ./output/$MODEL_NAME-$SETTING-80-$SEQ_LENGTH-$SUB_LABEL \
+accelerate launch \
+--config_file accelerate_configs/single_node.yaml \
+train.py \
+--output-dir  ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL \
 --seed 2027 \
 --model $MODEL \
---seq-length $SEQ_LENGTH \
---target-length $TARGET_LENGTH \
 --log-path $SETTING-$SEQ_LENGTH-$MODEL_NAME-$SUB_LABEL.log \
---setting $SETTING \
---rts-path $RTS_PATH \
---rss-path $RSS_PI_PATH \
---parallel_mode data_parallel \
---num_proc 5 \
---stage 3
+--stage 2
 ```
+
+You can also run
+
+```
+bash ./train_scirpts/train_LR_llama3_target80k_use24k.sh
+```
+
+after preprocess your data to do the three stage in one command.
 
 ### Evaluation
 

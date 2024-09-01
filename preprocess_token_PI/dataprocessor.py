@@ -82,7 +82,7 @@ if __name__ == "__main__":
         model_pre_id="meta-llama/Llama-2-7b-hf",
         model_post_id="meta-llama/Meta-Llama-3-8B",
         use_length=24000,
-        target_length=128000,
+        target_length=80000,
         model_name='__',
         processor_type='FS', 
         select_ratio=0.6
