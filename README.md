@@ -1,5 +1,31 @@
 # LongRecipe
 
+
+## Project Directory Structure
+
+
+```
+LongRecipe/
+├── accelerate_configs/
+│   ├── config_files
+├── easy_context/
+│   └── dist_flash_attn/
+│   └── ulysses_attn/
+│   └── zigzag_ring_attn/
+├── preprocess_token_PI/
+│   └── dataprocessor.py
+│   └── FSProcessor.py
+├── train_scripts/
+│   └── train_LR_llama3_target80k_use24k.sh
+├── utils/
+│   └── loader.py
+│   └── logger.py
+│   └── preprocess_data.py
+├── README.md
+├── requirements.txt
+└── train.py
+```
+
 ## Reproduction:
 
 Before starting with the data preprocessing and model training, ensure that all necessary dependencies are installed. Use the following command to install the required packages:
