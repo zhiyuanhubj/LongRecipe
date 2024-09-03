@@ -13,7 +13,6 @@ from accelerate.utils import InitProcessGroupKwargs, set_seed
 from torch.utils.data import DataLoader
 from datasets import load_dataset, load_from_disk, DatasetDict
 from transformers import default_data_collator
-from easy_context import prepare_dataloader
 import transformers
 from flash_attn.losses.cross_entropy import CrossEntropyLoss
 import math
@@ -23,16 +22,17 @@ from accelerate.utils import (
     DummyOptim,
     DummyScheduler,
 )
-from easy_context import (
+from utils.easy_context import (
+    prepare_dataloader, 
     prepare_seq_parallel_inputs,
     apply_seq_parallel_monkey_patch,
     apply_unsloth_offloaded_gradient_checkpoint_monkey_patch
 )
 
 
-class CD_POS_TRAIN:
+class LongRecipe_TRAIN:
     """
-    Train LLMs with CD_Pos recipe.
+    Train LLMs with LongRecipe recipe.
     """
     def __init__(
         self, 
@@ -40,8 +40,8 @@ class CD_POS_TRAIN:
         log_path, 
         model_path, 
         data_path,
-        rts_path, 
-        rss_path, 
+        right_points_path, 
+        fs_PI_path, 
         learning_rate, 
         gradient_accumulate_every, 
         epoch, 
@@ -68,8 +68,8 @@ class CD_POS_TRAIN:
         self.model_path = model_path
         self.output_path = output_path
         self.data_path = data_path
-        self.rss_path = rss_path
-        self.rts_path = rts_path
+        self.fs_PI_path = fs_PI_path
+        self.right_points_path = right_points_path
         
         if self.output_path:
             os.makedirs(self.output_path, exist_ok=True)
@@ -104,8 +104,8 @@ class CD_POS_TRAIN:
                                                 setting_choice=self.setting,
                                                 seq_length_=self.seq_length, 
                                                 target_len=self.target_length,
-                                                rts_file=self.rts_path, 
-                                                rss_s_file=self.rss_path, 
+                                                right_points_file=self.right_points_path, 
+                                                fs_PI_s_file=self.fs_PI_path, 
                                                 num_proc=self.num_proc
                                             )
             print("Dataset Size:", len(train_dataset))
@@ -127,8 +127,8 @@ class CD_POS_TRAIN:
                                                 model_type=self.model_path, 
                                                 seq_length_=self.seq_length, 
                                                 target_len=self.target_length,
-                                                rts_file=self.rts_path, 
-                                                rss_s_file=self.rss_path, 
+                                                right_points_file=self.right_points_path, 
+                                                fs_PI_s_file=self.fs_PI_path, 
                                                 num_proc=self.num_proc
                                             )
             print("Dataset Size:", len(train_dataset))
@@ -387,8 +387,8 @@ if __name__ == "__main__":
     args.add_argument("--model-base-length", type=int, default=8192)
     args.add_argument("--target-length", type=int, default=128000)
     args.add_argument("--setting", type=str, default=None)
-    args.add_argument("--rts-path", type=str, default=None)
-    args.add_argument("--rss-path", type=str, default=None)
+    args.add_argument("--right_points-path", type=str, default=None)
+    args.add_argument("--fs_PI-path", type=str, default=None)
     args.add_argument("--log-path", type=str, default=None)
     args.add_argument("--stage", type=int, default=3)
     args.add_argument("--num_proc", type=int, default=1)
@@ -400,13 +400,13 @@ if __name__ == "__main__":
     
     args = args.parse_args()
     
-    cd_pos_train = CD_POS_TRAIN(
+    LongRecipe_train = LongRecipe_TRAIN(
         output_path=args.output_dir,  
         log_path=args.log_path, 
         model_path=args.model, 
         data_path=args.data_path, 
-        rts_path=args.rts_path, 
-        rss_path=args.rss_path, 
+        right_points_path=args.right_points_path, 
+        fs_PI_path=args.fs_PI_path, 
         seed=args.seed,   
         learning_rate=args.learning_rate, 
         gradient_accumulate_every=args.gradient_accumulate_every, 
@@ -420,4 +420,4 @@ if __name__ == "__main__":
         num_proc=args.num_proc, 
         )
 
-    cd_pos_train.train_with_stage()
+    LongRecipe_train.train_with_stage()

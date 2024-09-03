@@ -26,8 +26,8 @@ def preprocess_dataset(
     setting_choice,
     seq_length_, 
     target_len,
-    rts_file, 
-    rss_s_file, 
+    right_points_file, 
+    fs_PI_s_file, 
     num_proc, 
 ) -> Union["Dataset", "IterableDataset"]:
 
@@ -84,9 +84,9 @@ def preprocess_dataset(
 
         if setting_choice == 'LongRecipe':
 
-            with open(rts_file, 'rb') as fr:
+            with open(right_points_file, 'rb') as fr:
                 rt1s = pickle.load(fr)
-            with open(rss_s_file, 'rb') as fr:
+            with open(fs_PI_s_file, 'rb') as fr:
                 topk = pickle.load(fr)
 
             input_ids = []
@@ -146,14 +146,14 @@ def preprocess_dataset(
                
 
         elif setting_choice == 'pose': 
-            with open(rts_file, 'rb') as fr:
+            with open(right_points_file, 'rb') as fr:
                 rt1s = pickle.load(fr)
     
             
-            with open(rss_s_file, 'rb') as fr:
+            with open(fs_PI_s_file, 'rb') as fr:
                 topk = pickle.load(fr)
                 
-            rts = []
+            right_points = []
             lt1s = []
             input_ids = []
             position_ids = []

@@ -3,8 +3,8 @@ SEQ_LENGTH=24000
 TARGET_LENGTH=80000
 SETTING='LongRecipe'
 MODEL_NAME=llama3_8b
-RTS_PATH=./output/RTS.pkl
-RSS_PI_PATH=./output/LR_PI.pkl
+Right_Points_PATH=./output/right_points.pkl
+FS_PI_PATH=./output/LR_PI.pkl
 SUB_LABEL='LR_target80k_use24k'
 DATA_PATH_1='jsonl_file'
 DATA_PATH_2='replay_dataset'
@@ -12,8 +12,8 @@ MODEL='model_path'
 # --parallel_mode: data_parallel; 
 
 accelerate launch \
---config_file accelerate_configs/single_node.yaml \
-train.py \
+--config_file utils/accelerate_configs/single_node.yaml \
+utils/train.py \
 --batch-size 1 \
 --gradient-accumulate-every 96 \
 --learning-rate 5e-5 \
@@ -26,8 +26,8 @@ train.py \
 --target-length $TARGET_LENGTH \
 --log-path $SETTING-$SEQ_LENGTH-$MODEL_NAME-$SUB_LABEL.log \
 --setting $SETTING \
---rts-path $RTS_PATH \
---rss-path $RSS_PI_PATH \
+--right_points-path $Right_Points_PATH \
+--fs_PI-path $FS_PI_PATH \
 --parallel_mode data_parallel \
 --num_proc 5 \
 --stage 0
@@ -39,8 +39,8 @@ rm ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL/stage_0/model.safetensor
 
 
 accelerate launch \
---config_file accelerate_configs/single_node_2.yaml \
-train.py \
+--config_file utils/accelerate_configs/single_node_2.yaml \
+utils/train.py \
 --data_path $DATA_PATH_2 \
 --batch-size 1 \
 --gradient-accumulate-every 96 \
@@ -53,8 +53,8 @@ train.py \
 --target-length $TARGET_LENGTH \
 --log-path $SETTING-$SEQ_LENGTH-$MODEL_NAME-$SUB_LABEL.log \
 --setting $SETTING \
---rts-path $RTS_PATH \
---rss-path $RSS_PI_PATH \
+--right_points-path $Right_Points_PATH \
+--fs_PI-path $FS_PI_PATH \
 --parallel_mode data_parallel \
 --num_proc 5 \
 --stage 1
@@ -65,9 +65,9 @@ cp $MODEL/tokenizer.json ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL/st
 rm ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL/stage_1/model.safetensors
 
 
-accelerate launch \
+accelerate utils/launch \
 --config_file accelerate_configs/single_node.yaml \
-train.py \
+utils/train.py \
 --output-dir  ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL \
 --seed 2027 \
 --model $MODEL \
