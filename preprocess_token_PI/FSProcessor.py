@@ -145,7 +145,7 @@ class FSProcessor:
         lengths = [len(item) for item in selected]
         print(f'sample_length: {np.mean(lengths)}')
 
-        with open(f'output/feature_{str(self.select_ratio)*10}_tokens.jsonl', 'w') as f:
+        with open(f'output/feature_{str(int(self.select_ratio*10))}_tokens.jsonl', 'w') as f:
             for new_data in tqdm.tqdm(selected):
                 f.write(json.dumps({'input_ids': new_data}) + '\n')
 
@@ -153,7 +153,7 @@ class FSProcessor:
         res_lists = self.generate_res_lists(new_total_indexes)
 
         print(len(res_lists[0]))
-        self.save_data(res_lists, f"output/llama3_RSS_S_{str(self.select_ratio)*10}_digits_l{self.base_length}_t{self.extend_length}_min{self.min_num}_max{self.max_num}.pkl")
+        self.save_data(res_lists, f"output/llama3_LF_{str(int(self.select_ratio*10))}_digits_l{self.base_length}_t{self.extend_length}_min{self.min_num}_max{self.max_num}.pkl")
 
-        rt1s = [random.randint(1, (self.base_length + 1) // 2) for _ in range(len(res_lists))]
-        self.save_data(rt1s, f"output/llama3_rt1s_{str(self.select_ratio)*10}_digits_l{self.base_length}_t{self.extend_length}_min{self.min_num}_max{self.max_num}.pkl")
+        right_points = [random.randint(1, (self.base_length + 1) // 2) for _ in range(len(res_lists))]
+        self.save_data(right_points, f"output/llama3_LPS_{str(int(self.select_ratio*10))}_digits_l{self.base_length}_t{self.extend_length}_min{self.min_num}_max{self.max_num}.pkl")

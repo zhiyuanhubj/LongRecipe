@@ -11,7 +11,6 @@ from functools import partial
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from FSProcessor import FSProcessor
-# from RSSProcessor import RSSProcessor
 
 def process_data_single(dat, llama_tokenizer, llama_3_tokenizer):
     new_token = llama_3_tokenizer.encode(llama_tokenizer.decode(dat))
@@ -69,13 +68,25 @@ class DataProcessor:
             for line in f:
                 processed_data.append(json.loads(line))
         return processed_data
-
+    
+    def load_processed_data(self, processed_file):
+        processed_data = []
+        with open(processed_file, 'r') as f:
+            for line in f:
+                processed_data.append(json.loads(line))
+        return processed_data
+    
     def run(self):
+        dataset = self.load_dataset_()
+        if not os.path.exists(self.target_model_tokenizer_file):
+            self.process_data_parallel(dataset)
+        processed_data = self.load_processed_data(self.target_model_tokenizer_file)
+        
         self.processor.run_process(processed_data)
 
 
 if __name__ == "__main__":
-    processor = DataProcessor(
+    processor = DataProcessor( 
         dataset_name='yaofu/slimpajama-per-source-length-upsample',
         target_model_tokenizer_file='output/processed_llama_3_s10l_full.json',
         dataset_split='train[0:10000]',

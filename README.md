@@ -67,8 +67,8 @@ train.py \
 --target-length $TARGET_LENGTH \
 --log-path $SETTING-$SEQ_LENGTH-$MODEL_NAME-$SUB_LABEL.log \
 --setting $SETTING \
---rts-path $RTS_PATH \
---rss-path $RSS_PI_PATH \
+--right_points-path $Right_Points_PATH \
+--fs_PI-path $FS_PI_PATH \
 --parallel_mode ulysses_attn \
 --num_proc 5 \
 --stage 0
@@ -81,8 +81,8 @@ Arguments Explanation:
 * **--seq-length**: The sequence length for training.
 * **--target-length**: The target context window length.
 * **--setting**: The training method, which could include FLT, RPES, PoSE, LongRecipe.
-* **--rts-path**: Path to the PoSE right point set file.
-* **--rss-path**: Path to the LongRecipe’s position index file.
+* **--right_points-path**: Path to the PoSE right point set file.
+* **--fs_PI-path**: Path to the LongRecipe’s position index file.
 
 Post-training, copy the tokenizer files to the output directory and remove any unnecessary files:
 
@@ -113,8 +113,8 @@ train.py \
 --target-length $TARGET_LENGTH \
 --log-path $SETTING-$SEQ_LENGTH-$MODEL_NAME-$SUB_LABEL.log \
 --setting $SETTING \
---rts-path $RTS_PATH \
---rss-path $RSS_PI_PATH \
+--right_points-path $Right_Points_PATH \
+--fs_PI-path $FS_PI_PATH \
 --parallel_mode ulysses_attn \
 --num_proc 10 \
 --stage 1

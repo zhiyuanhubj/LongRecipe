@@ -3,10 +3,10 @@ SEQ_LENGTH=24000
 TARGET_LENGTH=80000
 SETTING='LongRecipe'
 MODEL_NAME=llama3_8b
-Right_Points_PATH=./output/right_points.pkl
-FS_PI_PATH=./output/LR_PI.pkl
+Right_Points_PATH=./output/llama3_LPS_6_digits_l24000_t80000_min1_max1.pkl
+FS_PI_PATH=./output/llama3_LF_6_digits_l24000_t80000_min1_max1.pkl
 SUB_LABEL='LR_target80k_use24k'
-DATA_PATH_1='jsonl_file'
+DATA_PATH_1='./output/feature_6_tokens.jsonl'
 DATA_PATH_2='replay_dataset'
 MODEL='model_path'
 # --parallel_mode: data_parallel; 
