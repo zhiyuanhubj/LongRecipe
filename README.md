@@ -155,6 +155,7 @@ bash ./train_scirpts/train_LR_llama3_target80k_use24k.sh
 
 after preprocess your data to do the three stage in one command.
 
+<!-- 
 ### Evaluation
 
 Before conducting the evaluation of our method, you need to configure a new environment for it.
@@ -183,6 +184,7 @@ sh run.sh model_name model_path synthetic
 **synthetic** indicates the synthetic.yaml
 
 #### Check the final evaluation scores for different benchmarks.
+-->
 
 
 ## Citation
@@ -191,10 +193,9 @@ If you find this repo helpful, please cite our paper as follows:
 
 ```
 @article{hu2024longrecipe,
-  title={LongRecipe: The Recipe for Efficient Long Context Generalization in
-Large Languge Models},
-  author={Zhiyuan Hu, Yuliang Liu},
-  journal={arXiv preprint arXiv:2408.XXXXX},
-  year={2023}
+  title={LongRecipe: Recipe for Efficient Long Context Generalization in Large Languge Models},
+  author={Zhiyuan Hu, Yuliang Liu, Jinman Zhao, Suyuchen Wang, Yan Wang, Wei Shen, Qing Gu, Anh Tuan Luu, See-Kiong Ng, Zhiwei Jiang, Bryan Hooi},
+  journal={arXiv preprint arXiv:2409.00509},
+  year={2024}
 }
 ```
