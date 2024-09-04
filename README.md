@@ -1,4 +1,7 @@
-# LongRecipe
+# LongRecipe: Recipe for Efficient Long Context Generalization in Large Language Models
+
+<p align="center">
+    🤗 <a href="https://huggingface.co/zhiyuanhucs/LongRecipe-Llama3-8B-128k" target="_blank">LongRecipe-Llama3-8B-128k</a>  • 🤗 <a href="https://huggingface.co/zhiyuanhucs/LongRecipe-Qwen2-7B-128k" target="_blank">LongRecipe-Qwen2-7B-128k</a> • 📃 <a href="https://arxiv.org/abs/2409.00509" target="_blank">Paper</a>
 
 
 ## Project Directory Structure
