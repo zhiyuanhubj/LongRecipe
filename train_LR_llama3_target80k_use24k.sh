@@ -52,7 +52,7 @@ utils/train.py \
 --seq-length $SEQ_LENGTH \
 --target-length $TARGET_LENGTH \
 --log-path $SETTING-$SEQ_LENGTH-$MODEL_NAME-$SUB_LABEL.log \
---setting $SETTING \
+--setting full \
 --right_points-path $Right_Points_PATH \
 --fs_PI-path $FS_PI_PATH \
 --parallel_mode data_parallel \
