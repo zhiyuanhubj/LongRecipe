@@ -132,6 +132,15 @@ cp $MODEL/tokenizer.json ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL/st
 rm ./output/$MODEL_NAME-$SETTING-$SEQ_LENGTH-$SUB_LABEL/stage_1/model.safetensors
 ```
 
+In our experiment, we merge the two datasets mentioned together in out paper, and format each sample as follows: 
+
+```
+{
+  "prompt": ,
+  "response": 
+}
+```
+
 #### Stage 3: Model Merge
 
 The final stage involves merging the original model with the fine-tuned model using an average weight strategy to enhance the model's foundational capabilities.
