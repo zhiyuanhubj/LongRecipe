@@ -32,7 +32,7 @@ from utils.easy_context import (
 
 class LongRecipe_TRAIN:
     """
-    Train LLMs with LongRecipe recipe.
+    Train LLMs with LongRecipe.
     """
     def __init__(
         self, 
