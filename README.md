@@ -1,8 +1,5 @@
 # LongRecipe: Recipe for Efficient Long Context Generalization in Large Language Models
 
-<p align="center">
-    🤗 <a href="https://huggingface.co/zhiyuanhucs/LongRecipe-Llama3-8B-128k" target="_blank">LongRecipe-Llama3-8B-128k</a>  • 🤗 <a href="https://huggingface.co/zhiyuanhucs/LongRecipe-Qwen2-7B-128k" target="_blank">LongRecipe-Qwen2-7B-128k</a> • 📃 <a href="https://arxiv.org/abs/2409.00509" target="_blank">Paper</a>
-
 
 ## Project Directory Structure
 
@@ -199,15 +196,3 @@ sh run.sh model_name model_path synthetic
 -->
 
 
-## Citation
-
-If you find this repo helpful, please cite our paper as follows:
-
-```
-@article{hu2024longrecipe,
-  title={LongRecipe: Recipe for Efficient Long Context Generalization in Large Languge Models},
-  author={Zhiyuan Hu, Yuliang Liu, Jinman Zhao, Suyuchen Wang, Yan Wang, Wei Shen, Qing Gu, Anh Tuan Luu, See-Kiong Ng, Zhiwei Jiang, Bryan Hooi},
-  journal={arXiv preprint arXiv:2409.00509},
-  year={2024}
-}
-```
